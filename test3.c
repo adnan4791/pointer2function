@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 #include "struktur.h"
 
 int task_loop(int a, int b, taskp task, int grainsize);
@@ -15,8 +16,11 @@ int task_loop(int a, int b, taskp task, int grainsize) {
     } 
     else {
         int m = (a+b)/2;
+        #pragma omp task
         task_loop(a,m,task,grainsize);
+        #pragma omp task
         task_loop(m,b,task,grainsize);
+        #pragma omp taskwait
     }
 }
 
